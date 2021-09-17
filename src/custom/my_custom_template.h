@@ -7,6 +7,9 @@
 #include "hasplib.h"
 #if HASP_USE_CUSTOM > 0
 
+/*this function is used to do logic depending on the published mqtt message*/
+void publishmessageprocessing(const char* subtopic, const char* payload);
+
 /* This function is called at boot */
 void custom_setup();
 
