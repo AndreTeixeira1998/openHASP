@@ -48,6 +48,7 @@ void dispatchStop(void);
 /* ===== Special Event Processors ===== */
 void dispatch_topic_payload(const char* topic, const char* payload, bool update, uint8_t source);
 void dispatch_text_line(const char* cmnd, uint8_t source);
+void dispatch_send_sensordata(const char*, const char*, uint8_t source);
 
 #ifdef ARDUINO
 void dispatch_parse_jsonl(Stream& stream);
