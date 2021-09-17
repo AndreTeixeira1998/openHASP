@@ -2,6 +2,7 @@
    For full license information read the LICENSE file in the project folder */
 
 #include <time.h>
+#include <sys/time.h>
 
 //#include "ArduinoLog.h"
 #include "hasplib.h"
@@ -22,7 +23,7 @@
 #include "../mqtt/hasp_mqtt.h"
 #else
 #include "StringStream.h"
-#include "StreamUtils.h" // for exec
+#include "StreamUtils.h" // for exec ReadBufferingStream
 #include "CharStream.h"
 
 #include "hasp_oobe.h"
@@ -657,6 +658,8 @@ void dispatch_parse_jsonl(const char*, const char* payload, uint8_t source)
 void dispatch_exec(const char*, const char* payload, uint8_t source)
 {
 #if ARDUINO
+#if HASP_USE_SPIFFS > 0 || HASP_USE_LITTLEFS > 0
+
     if(!HASP_FS.exists(payload)) {
         LOG_WARNING(TAG_MSGR, F(D_FILE_NOT_FOUND ": %s"), payload);
         return;
@@ -697,6 +700,9 @@ void dispatch_exec(const char*, const char* payload, uint8_t source)
 
     cmdfile.close();
     LOG_INFO(TAG_MSGR, F(D_FILE_LOADED), payload);
+#else
+    LOG_INFO(TAG_MSGR, F(D_FILE_LOAD_FAILED), payload);
+#endif
 #else
     char path[strlen(payload) + 4];
     path[0] = '.';
