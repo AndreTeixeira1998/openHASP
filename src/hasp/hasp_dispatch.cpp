@@ -58,6 +58,10 @@ void dispatch_state_subtopic(const char* subtopic, const char* payload)
 #if !defined(HASP_USE_MQTT) && !defined(HASP_USE_TASMOTA_CLIENT)
     LOG_TRACE(TAG_MSGR, F("%s => %s"), subtopic, payload);
 #else
+   
+   #if HASP_USE_CUSTOM > 0
+   publishmessageprocessing(subtopic,  payload);
+   #endif
 
 #if HASP_USE_MQTT > 0
     switch(mqtt_send_state(subtopic, payload)) {
